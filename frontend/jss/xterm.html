@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Xterm</title>
+    <link rel="stylesheet" href="xterm.css"/>
+    <script src="xterm.js"></script>
+</head>
+<body>
+<div id="terminal"></div>
+
+
+<script>
+    var term = new Terminal({
+        cursorBlink: true,
+        cursorStyle: "underline",
+    });
+    term.open(document.getElementById("terminal"));
+    term.prompt = _ => {
+        term.write("\r\n\x1b[33m$\x1b[0m ")
+    }
+
+    var ws = new WebSocket("ws://localhost:80/terminal");
+    ws.onmessage = e => {
+        term.write(e.data);
+    }
+    ws.onclose = e => {
+        term.write("\r\n\x1b[33m连接断开\x1b[0m")
+    }
+
+    term.onData(e => {
+        ws.send(e);
+    })
+</script>
+</body>
+</html>

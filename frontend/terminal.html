@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tiny Terminal</title>
+    <link rel="stylesheet" href="/frontend/jss/xterm.css">
+</head>
+<body>
+<div id="terminal"></div>
+
+<script src="/frontend/jss/xterm.js"></script>
+<script>
+    var term = new Terminal({
+        cursorBlink: true,
+        cursorStyle: "underline",
+
+    })
+    term.open(document.getElementById("terminal"))
+
+    term.write("hello, world")
+
+
+</script>
+</body>
+</html>
