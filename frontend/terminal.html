@@ -3,23 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Tiny Terminal</title>
-    <link rel="stylesheet" href="/frontend/jss/xterm.css">
+    <link rel="stylesheet" href="/frontend/css/xterm.css">
 </head>
 <body>
 <div id="terminal"></div>
 
-<script src="/frontend/jss/xterm.js"></script>
+<script src="/frontend/js/xterm.js"></script>
+<script src="/frontend/js/xterm-addon-fit.js"></script>
+<script src="/frontend/js/xterm-addon-web-links.js"></script>
 <script>
-    var term = new Terminal({
+    const term = new Terminal({
+        rendererType: "canvas",
+        rows: 24,
+        cols: 100,
+        scrollback: 198,
         cursorBlink: true,
         cursorStyle: "underline",
-
+        theme: {
+            foreground: "yellow", //字体
+            background: "#060101", //背景色
+            cursor: "help" //设置光标
+        }
     })
+    term.fiter = new FitAddon.FitAddon()
+    term.loadAddon(term.fiter)
+    term.loadAddon(new WebLinksAddon.WebLinksAddon())
     term.open(document.getElementById("terminal"))
+    // term.dispose() // 销毁
+    // term.reset() //
 
-    term.write("hello, world")
 
+    // term.resize() 设置行列数
+    // term.onResize 回调
+    // term.writeln() term.writeUtf8
+    // term.select
+    // has selection
 
+    var ws = new WebSocket("ws://localhost:80/api/terminal?hostname=&username=&password=")
+
+    fit.fit()
+    ws.onopen = e => {
+        term.open(document.getElementById("terminal"))
+        term.onData(e => {
+            ws.send(e)
+        })
+    }
+    ws.onmessage = e => {
+        term.write(e.data)
+    }
+    ws.onclose = e => {
+        term.write("\r\n\x1b[33m连接断开\x1b[0m")
+    }
 </script>
 </body>
 </html>
