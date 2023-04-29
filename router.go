@@ -9,8 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"golang.org/x/crypto/ssh"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"io"
 	"io/fs"
 	"log"
@@ -22,25 +20,11 @@ import (
 	"unicode/utf8"
 )
 
-type SSHDialInfo struct {
-	gorm.Model
-
-	Hostname string
-	Username string
-	Password string
-}
-
 //go:embed frontend/css/* frontend/js/*
 var AssetFS embed.FS
 
 func main() {
-	orm, err := gorm.Open(sqlite.Open("test.db"), nil)
-	if err != nil {
-		panic("failed to connect database")
-	}
-	defer orm.Debug()
-
-	var router = gin.Default()
+	var router = gin.Default().Delims("[[", "]]")
 
 	router.LoadHTMLGlob("frontend/*.html")
 	frontend, _ := fs.Sub(AssetFS, "frontend")
@@ -54,7 +38,7 @@ func main() {
 	})
 
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "home.html", gin.H{})
+		c.HTML(http.StatusOK, "home.html", gin.H{"message": "hello,gin"})
 	})
 
 	router.GET("/terminal", func(c *gin.Context) {
