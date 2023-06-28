@@ -2,11 +2,7 @@ module 624140400
 
 go 1.20
 
-require (
-	github.com/gin-gonic/gin v1.9.0
-	github.com/gorilla/websocket v1.5.0
-	golang.org/x/crypto v0.8.0
-)
+require github.com/gin-gonic/gin v1.9.0
 
 require (
 	github.com/bytedance/sonic v1.8.7 // indirect
@@ -26,8 +22,8 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
-	github.com/valyala/fastjson v1.6.4 // indirect
 	golang.org/x/arch v0.3.0 // indirect
+	golang.org/x/crypto v0.8.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
